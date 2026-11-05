@@ -1,0 +1,7 @@
+# Shell scripts, Dockerfiles and Ansible/K8s YAML must keep LF endings: they run on Linux
+# (Jenkins container, WSL, Docker), where CRLF breaks bash and systemd unit files.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.jar binary
+*.png binary

@@ -1,0 +1,13 @@
+# Gradle / Kotlin build output (server/build/ and the root build/ folder, where the
+# JAR downloaded from Jenkins is placed for Ansible in Component 2)
+.gradle/
+.kotlin/
+build/
+server/momento-server-*.jar
+
+# IDE / OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
