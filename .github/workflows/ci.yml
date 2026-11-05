@@ -1,0 +1,41 @@
+# GitHub Actions running alongside Jenkins: builds and tests the Momento API on every push and PR.
+name: Momento API CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['server/**', '.github/workflows/ci.yml']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      - name: Test
+        run: gradle test
+
+      - name: Package
+        run: |
+          gradle buildFatJar -x test
+          cp build/libs/momento-server.jar "momento-server-gh${{ github.run_number }}-${GITHUB_SHA::7}.jar"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: momento-server-jar
+          path: server/momento-server-*.jar
